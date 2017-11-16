@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Денис Божко](https://up.htmlacademy.ru/javascript/11/user/522759).
-* Наставник: `Неизвестно`.
+* Наставник: Всеволод Артемьев.
 
 ---
 

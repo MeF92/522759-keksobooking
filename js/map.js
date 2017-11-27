@@ -10,8 +10,6 @@ mapElement.classList.remove('map--faded');
 
 var mapFiltersContainerElement = document.querySelector('.map__filters-container');
 
-var similarAdsTemplateElement = document.querySelector('template').content.querySelector('.map__card');
-
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
@@ -50,15 +48,18 @@ var mapPinsElement = document.querySelector('.map__pins');
 var createMapPinsFragmentElement = function (ads) {
   var fragmentElement = document.createDocumentFragment();
   var mapPinsContentElement;
+  var buttonWidth = 40;
+  var buttonHeight = 40;
   for (var i = 0; i <= ads.length - 1; i++) {
-    mapPinsContentElement = '<button style="left:' + ads[i].location.x + 'px; top:' + ads[i].location.y + 'px;" class="map__pin">' +
-      '<img src="' + ads[i].author.avatar + '" width="40" height="40" draggable="false">' +
+    mapPinsContentElement = '<button style="left:' + (ads[i].location.x - buttonWidth / 2) + 'px; top:' + (ads[i].location.y - buttonHeight) + 'px;"' +
+    ' class="map__pin"><img src="' + ads[i].author.avatar + '" width="' + buttonWidth + '" height="' + buttonHeight + '" draggable="false">' +
       '</button>';
     fragmentElement.insertAdjacentHTML('beforeend', mapPinsContentElement);
   }
   mapPinsElement.appendChild(fragmentElement);
 };
 
+var similarAdsTemplateElement = document.querySelector('template').content.querySelector('.map__card');
 var renderAd = function (ad) {
   var similarAdElement = similarAdsTemplateElement.cloneNode(true);
 
@@ -81,6 +82,7 @@ var renderAd = function (ad) {
   return similarAdElement;
 };
 
-mapElement.insertBefore(renderAd(), mapFiltersContainerElement);
+createMapPinsFragmentElement(createAds());
+mapElement.insertBefore(renderAd(createAds()), mapFiltersContainerElement);
 
 

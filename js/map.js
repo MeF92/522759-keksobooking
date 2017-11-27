@@ -8,6 +8,10 @@ var APARTMENT_FEATURES = ['wifi', 'dishwater', 'parking', 'washer', 'elevator', 
 var mapElement = document.querySelector('.map');
 mapElement.classList.remove('map--faded');
 
+var mapFiltersContainerElement = document.querySelector('.map__filters-container');
+
+var similarAdsTemplateElement = document.querySelector('template').content.querySelector('.map__card');
+
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
@@ -21,7 +25,7 @@ var createAds = function () {
     };
     ads[i] = {
       author: {
-        avatar: 'img/avatars/user0' + (i + 1) + '.png',
+        avatar: 'img/avatars/user0' + (i + 1) + '.png'
       },
       offer: {
         title: AD_TITLES[i],
@@ -55,6 +59,28 @@ var createMapPinsFragmentElement = function (ads) {
   mapPinsElement.appendChild(fragmentElement);
 };
 
-var similarAdsTemplateElement = document.querySelector('template').content.querySelector('.map__card');
+var renderAd = function (ad) {
+  var similarAdElement = similarAdsTemplateElement.cloneNode(true);
+
+  similarAdElement.querySelector('h3').textContent = ad.offer.title;
+  similarAdElement.querySelector('p small').textContent = ad.offer.address;
+  similarAdElement.querySelector('.popup__price').textContent = ad.offer.price + '&#x20bd;/ночь';
+  similarAdElement.querySelector('h4').textContent = (ad.offer.type === 'flat') ? 'Квартира' : (ad.offer.type === 'house') ? 'Дом' : 'Бунгало';
+  similarAdElement.querySelector('p:nth-of-type(3)').textContent = ad.offer.rooms + ' комнаты ' + 'для ' + ad.offer.guests + ' гостей';
+  similarAdElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+
+  for (var i = 0; i <= ad.offer.features.length - 1; i++) {
+    var featuresListElement = document.createElement('li');
+    featuresListElement.className = 'feature feature--' + ad.offer.features.length[i];
+    similarAdElement.querySelector('.popup__features').appendChild(featuresListElement);
+  }
+
+  similarAdElement.querySelector('p:nth-of-type(5)').textContent = ad.offer.description;
+  similarAdElement.querySelector('.popup__pictures li img').setAttribute('src', ad.author.avatar);
+
+  return similarAdElement;
+};
+
+mapElement.insertBefore(renderAd(), mapFiltersContainerElement);
 
 

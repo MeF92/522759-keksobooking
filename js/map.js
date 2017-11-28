@@ -5,6 +5,19 @@
   var APARTMENT_TYPES = ['flat', 'house', 'bungalo'];
   var CHECK_HOURS = ['12:00', '13:00', '14:00'];
   var APARTMENT_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  var APARTMENT_TYPE_DISPLAY_NAME = {
+    flat: 'Квартира',
+    bungalo: 'Бунгало',
+    house: 'Дворец'
+  };
+  var ROOMS_ENDING = [
+    '',
+    'комната',
+    'комнаты',
+    'комнаты',
+    'комнаты',
+    'комнат'
+  ];
 
   var mapElement = document.querySelector('.map');
   mapElement.classList.remove('map--faded');
@@ -46,7 +59,7 @@
   };
 
   var mapPinsElement = document.querySelector('.map__pins');
-  var createMapPins = function (ad) {
+  var createMapPin = function (ad) {
     var mapPinsContentElement = document.createElement('button');
     var buttonWidth = 40;
     var buttonHeight = 40;
@@ -61,7 +74,7 @@
   var createFragmentElement = function (ads) {
     var fragmentElement = document.createDocumentFragment();
     for (var i = 0; i < ads.length; i++) {
-      fragmentElement.appendChild(createMapPins(ads[i]));
+      fragmentElement.appendChild(createMapPin(ads[i]));
     }
     return fragmentElement;
   };
@@ -77,23 +90,8 @@
     similarAdElement.querySelector('h3').textContent = ad.offer.title;
     similarAdElement.querySelector('p small').textContent = ad.offer.address;
     similarAdElement.querySelector('.popup__price').innerHTML = ad.offer.price + '&#x20bd;/ночь';
-
-    var appartmentTypeDisplayName = {
-      flat: 'Квартира',
-      bungalo: 'Бунгало',
-      house: 'Дворец'
-    };
-    similarAdElement.querySelector('h4').textContent = appartmentTypeDisplayName[ad.offer.type];
-
-    var roomsEnding = [
-      '',
-      'комната',
-      'комнаты',
-      'комнаты',
-      'комнаты',
-      'комнат'
-    ];
-    similarAdElement.querySelector('p:nth-of-type(3)').textContent = ad.offer.rooms + ' ' + roomsEnding[ad.offer.rooms] + ' для ' + ad.offer.guests + ' гостей';
+    similarAdElement.querySelector('h4').textContent = APARTMENT_TYPE_DISPLAY_NAME[ad.offer.type];
+    similarAdElement.querySelector('p:nth-of-type(3)').textContent = ad.offer.rooms + ' ' + ROOMS_ENDING[ad.offer.rooms] + ' для ' + ad.offer.guests + ' гостей';
     similarAdElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
     for (var i = 0; i <= ad.offer.features.length - 1; i++) {

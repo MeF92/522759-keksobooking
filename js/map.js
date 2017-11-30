@@ -20,7 +20,6 @@
   ];
 
   var mapElement = document.querySelector('.map');
-  mapElement.classList.remove('map--faded');
 
   var mapFiltersContainerElement = document.querySelector('.map__filters-container');
 
@@ -65,7 +64,7 @@
     var buttonHeight = 40;
     mapPinsContentElement.style.left = (ad.location.x - buttonWidth / 2) + 'px';
     mapPinsContentElement.style.top = (ad.location.y - buttonHeight) + 'px';
-    mapPinsContentElement.className = 'map__pin';
+    mapPinsContentElement.className = 'map__pin hidden';
     mapPinsContentElement.innerHTML = '<img src="' + ad.author.avatar + '" width="' + buttonWidth + '" height="' + buttonHeight + '" draggable="false">';
 
     return mapPinsContentElement;
@@ -82,6 +81,7 @@
   mapPinsElement.appendChild(createFragmentElement(createAds()));
 
   var similarAdsTemplateElement = document.querySelector('template').content.querySelector('.map__card');
+  similarAdsTemplateElement.classList.add('hidden');
   var renderAd = function (ad) {
     var similarAdElement = similarAdsTemplateElement.cloneNode(true);
     var popupFeaturesElement = similarAdElement.querySelector('.popup__features');
@@ -107,5 +107,15 @@
   };
 
   mapElement.insertBefore(renderAd(createAds()[0]), mapFiltersContainerElement);
+
+  var test = createFragmentElement(createAds()).querySelectorAll('.map__pin');
+  var adElement = mapElement.insertBefore(renderAd(createAds()[0]), mapFiltersContainerElement);
+  var mapPinMain = document.querySelector('.map__pin--main');
+  var noticeForm = document.querySelector('.notice__form');
+  mapPinMain.addEventListener('mouseup', function () {
+    mapElement.classList.remove('map--faded');
+    noticeForm.classList.remove('notice__form--disabled');
+    test.classList.remove('hidden');
+  });
 })();
 

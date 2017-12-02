@@ -18,6 +18,8 @@
     'комнаты',
     'комнат'
   ];
+  var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
 
   var mapElement = document.querySelector('.map');
 
@@ -57,14 +59,17 @@
     return ads;
   };
 
+  var adverts = createAds();
+
   var mapPinsElement = document.querySelector('.map__pins');
-  var createMapPin = function (ad) {
+  var createMapPin = function (ad, id) {
     var mapPinsContentElement = document.createElement('button');
     var buttonWidth = 40;
     var buttonHeight = 40;
     mapPinsContentElement.style.left = (ad.location.x - buttonWidth / 2) + 'px';
     mapPinsContentElement.style.top = (ad.location.y - buttonHeight) + 'px';
     mapPinsContentElement.className = 'map__pin hidden';
+    mapPinsContentElement.setAttribute('ad-id', id);
     mapPinsContentElement.innerHTML = '<img src="' + ad.author.avatar + '" width="' + buttonWidth + '" height="' + buttonHeight + '" draggable="false">';
 
     return mapPinsContentElement;
@@ -73,17 +78,16 @@
   var createFragmentElement = function (ads) {
     var fragmentElement = document.createDocumentFragment();
     for (var i = 0; i < ads.length; i++) {
-      fragmentElement.appendChild(createMapPin(ads[i]));
+      fragmentElement.appendChild(createMapPin(ads[i], i));
     }
     return fragmentElement;
   };
 
-  mapPinsElement.appendChild(createFragmentElement(createAds()));
+  mapPinsElement.appendChild(createFragmentElement(adverts));
 
   var similarAdsTemplateElement = document.querySelector('template').content.querySelector('.map__card');
-  similarAdsTemplateElement.classList.add('hidden');
+  var similarAdElement = similarAdsTemplateElement.cloneNode(true);
   var renderAd = function (ad) {
-    var similarAdElement = similarAdsTemplateElement.cloneNode(true);
     var popupFeaturesElement = similarAdElement.querySelector('.popup__features');
     popupFeaturesElement.innerHTML = '';
 
@@ -102,20 +106,56 @@
 
     similarAdElement.querySelector('p:nth-of-type(5)').textContent = ad.offer.description;
     similarAdElement.querySelector('.popup__pictures li img').setAttribute('src', ad.author.avatar);
-
-    return similarAdElement;
   };
 
-  mapElement.insertBefore(renderAd(createAds()[0]), mapFiltersContainerElement);
+  renderAd(adverts[0]);
+  mapElement.insertBefore(similarAdElement, mapFiltersContainerElement);
+  similarAdElement.classList.add('hidden');
 
-  var test = createFragmentElement(createAds()).querySelectorAll('.map__pin');
-  var adElement = mapElement.insertBefore(renderAd(createAds()[0]), mapFiltersContainerElement);
+  var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
   var mapPinMain = document.querySelector('.map__pin--main');
+  var adClose = similarAdElement.querySelector('.popup__close');
   var noticeForm = document.querySelector('.notice__form');
   mapPinMain.addEventListener('mouseup', function () {
     mapElement.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
-    test.classList.remove('hidden');
+    for (var i = 0; i <= mapPins.length - 1; i++) {
+      mapPins[i].classList.remove('hidden');
+    }
+  });
+  var currentActivePin = null;
+  for (var i = 0; i <= mapPins.length - 1; i++) {
+    mapPins[i].addEventListener('click', function (evt) {
+      if (currentActivePin) {
+        currentActivePin.classList.remove('map__pin--active');
+      }
+      evt.target.classList.add('map__pin--active');
+      renderAd(adverts[evt.target.getAttribute('ad-id')]);
+      similarAdElement.classList.remove('hidden');
+      currentActivePin = evt.target;
+    });
+
+    mapPins[i].addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEYCODE) {
+        if (currentActivePin) {
+          currentActivePin.classList.remove('map__pin--active');
+        }
+        evt.target.classList.add('map__pin--active');
+        renderAd(adverts[evt.target.getAttribute('ad-id')]);
+        similarAdElement.classList.remove('hidden');
+        currentActivePin = evt.target;
+      }
+    });
+  }
+  adClose.addEventListener('click', function () {
+    similarAdElement.classList.add('hidden');
+    currentActivePin.classList.remove('map__pin--active');
+  });
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      similarAdElement.classList.add('hidden');
+      currentActivePin.classList.remove('map__pin--active');
+    }
   });
 })();
 

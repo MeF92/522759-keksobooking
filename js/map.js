@@ -18,9 +18,10 @@
     'комнаты',
     'комнат'
   ];
+  var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
 
   var mapElement = document.querySelector('.map');
-  mapElement.classList.remove('map--faded');
 
   var mapFiltersContainerElement = document.querySelector('.map__filters-container');
 
@@ -58,14 +59,17 @@
     return ads;
   };
 
-  var mapPinsElement = document.querySelector('.map__pins');
-  var createMapPin = function (ad) {
+  var adverts = createAds();
+
+  var mapPinsContainerElement = document.querySelector('.map__pins');
+  var createMapPin = function (ad, id) {
     var mapPinsContentElement = document.createElement('button');
     var buttonWidth = 40;
     var buttonHeight = 40;
     mapPinsContentElement.style.left = (ad.location.x - buttonWidth / 2) + 'px';
     mapPinsContentElement.style.top = (ad.location.y - buttonHeight) + 'px';
-    mapPinsContentElement.className = 'map__pin';
+    mapPinsContentElement.className = 'map__pin hidden';
+    mapPinsContentElement.setAttribute('ad-id', id);
     mapPinsContentElement.innerHTML = '<img src="' + ad.author.avatar + '" width="' + buttonWidth + '" height="' + buttonHeight + '" draggable="false">';
 
     return mapPinsContentElement;
@@ -74,16 +78,16 @@
   var createFragmentElement = function (ads) {
     var fragmentElement = document.createDocumentFragment();
     for (var i = 0; i < ads.length; i++) {
-      fragmentElement.appendChild(createMapPin(ads[i]));
+      fragmentElement.appendChild(createMapPin(ads[i], i));
     }
     return fragmentElement;
   };
 
-  mapPinsElement.appendChild(createFragmentElement(createAds()));
+  mapPinsContainerElement.appendChild(createFragmentElement(adverts));
 
   var similarAdsTemplateElement = document.querySelector('template').content.querySelector('.map__card');
+  var similarAdElement = similarAdsTemplateElement.cloneNode(true);
   var renderAd = function (ad) {
-    var similarAdElement = similarAdsTemplateElement.cloneNode(true);
     var popupFeaturesElement = similarAdElement.querySelector('.popup__features');
     popupFeaturesElement.innerHTML = '';
 
@@ -102,10 +106,61 @@
 
     similarAdElement.querySelector('p:nth-of-type(5)').textContent = ad.offer.description;
     similarAdElement.querySelector('.popup__pictures li img').setAttribute('src', ad.author.avatar);
-
-    return similarAdElement;
   };
 
-  mapElement.insertBefore(renderAd(createAds()[0]), mapFiltersContainerElement);
+  renderAd(adverts[0]);
+  mapElement.insertBefore(similarAdElement, mapFiltersContainerElement);
+  similarAdElement.classList.add('hidden');
+
+  var mapPinsElements = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+  var mapPinMainElement = document.querySelector('.map__pin--main');
+  var adCloseElement = similarAdElement.querySelector('.popup__close');
+  var noticeFormElement = document.querySelector('.notice__form');
+  var currentActivePinElement = null;
+
+  var onPinClick = function (evt) {
+    if (currentActivePinElement) {
+      currentActivePinElement.classList.remove('map__pin--active');
+    }
+    evt.target.classList.add('map__pin--active');
+    renderAd(adverts[evt.target.getAttribute('ad-id')]);
+    similarAdElement.classList.remove('hidden');
+    currentActivePinElement = evt.target;
+  };
+
+  var onClosingAd = function () {
+    similarAdElement.classList.add('hidden');
+    currentActivePinElement.classList.remove('map__pin--active');
+  };
+
+  mapPinMainElement.addEventListener('mouseup', function () {
+    mapElement.classList.remove('map--faded');
+    noticeFormElement.classList.remove('notice__form--disabled');
+    for (var i = 0; i <= mapPinsElements.length - 1; i++) {
+      mapPinsElements[i].classList.remove('hidden');
+    }
+  });
+
+  mapPinsContainerElement.addEventListener('click', function (evt) {
+    if (evt.target !== mapPinMainElement) {
+      onPinClick(evt);
+    }
+  });
+
+  mapPinsContainerElement.addEventListener('keydown', function (evt) {
+    if (evt.target !== mapPinMainElement && evt.keyCode === ENTER_KEYCODE) {
+      onPinClick(evt);
+    }
+  });
+
+  adCloseElement.addEventListener('click', function () {
+    onClosingAd();
+  });
+
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      onClosingAd();
+    }
+  });
 })();
 

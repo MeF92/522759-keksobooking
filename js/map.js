@@ -116,21 +116,21 @@
   var mapPinMainElement = document.querySelector('.map__pin--main');
   var adCloseElement = similarAdElement.querySelector('.popup__close');
   var noticeFormElement = document.querySelector('.notice__form');
-  var currentActivePin = null;
+  var currentActivePinElement = null;
 
   var onPinClick = function (evt) {
-    if (currentActivePin) {
-      currentActivePin.classList.remove('map__pin--active');
+    if (currentActivePinElement) {
+      currentActivePinElement.classList.remove('map__pin--active');
     }
     evt.target.classList.add('map__pin--active');
     renderAd(adverts[evt.target.getAttribute('ad-id')]);
     similarAdElement.classList.remove('hidden');
-    currentActivePin = evt.target;
+    currentActivePinElement = evt.target;
   };
 
   var onClosingAd = function () {
     similarAdElement.classList.add('hidden');
-    currentActivePin.classList.remove('map__pin--active');
+    currentActivePinElement.classList.remove('map__pin--active');
   };
 
   mapPinMainElement.addEventListener('mouseup', function () {

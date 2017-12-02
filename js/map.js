@@ -116,6 +116,23 @@
   var mapPinMain = document.querySelector('.map__pin--main');
   var adClose = similarAdElement.querySelector('.popup__close');
   var noticeForm = document.querySelector('.notice__form');
+  var currentActivePin = null;
+
+  var onPinClick = function (evt) {
+    if (currentActivePin) {
+      currentActivePin.classList.remove('map__pin--active');
+    }
+    evt.target.classList.add('map__pin--active');
+    renderAd(adverts[evt.target.getAttribute('ad-id')]);
+    similarAdElement.classList.remove('hidden');
+    currentActivePin = evt.target;
+  };
+
+  var onClosingAd = function () {
+    similarAdElement.classList.add('hidden');
+    currentActivePin.classList.remove('map__pin--active');
+  };
+
   mapPinMain.addEventListener('mouseup', function () {
     mapElement.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
@@ -123,38 +140,28 @@
       mapPins[i].classList.remove('hidden');
     }
   });
-  var currentActivePin = null;
-  for (var i = 0; i <= mapPins.length - 1; i++) {
-    mapPins[i].addEventListener('click', function (evt) {
-      if (currentActivePin) {
-        currentActivePin.classList.remove('map__pin--active');
-      }
-      evt.target.classList.add('map__pin--active');
-      renderAd(adverts[evt.target.getAttribute('ad-id')]);
-      similarAdElement.classList.remove('hidden');
-      currentActivePin = evt.target;
-    });
 
-    mapPins[i].addEventListener('keydown', function (evt) {
-      if (evt.keyCode === ENTER_KEYCODE) {
-        if (currentActivePin) {
-          currentActivePin.classList.remove('map__pin--active');
-        }
-        evt.target.classList.add('map__pin--active');
-        renderAd(adverts[evt.target.getAttribute('ad-id')]);
-        similarAdElement.classList.remove('hidden');
-        currentActivePin = evt.target;
-      }
-    });
-  }
-  adClose.addEventListener('click', function () {
-    similarAdElement.classList.add('hidden');
-    currentActivePin.classList.remove('map__pin--active');
+  mapPinsElement.addEventListener('click', function (evt) {
+    if (evt.target !== mapPinMain) {
+      onPinClick(evt);
+    }
   });
+
+  mapPinsElement.addEventListener('keydown', function (evt) {
+    if (evt.target !== mapPinMain) {
+      if (evt.keyCode === ENTER_KEYCODE) {
+        onPinClick(evt);
+      }
+    }
+  });
+
+  adClose.addEventListener('click', function () {
+    onClosingAd();
+  });
+
   document.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
-      similarAdElement.classList.add('hidden');
-      currentActivePin.classList.remove('map__pin--active');
+      onClosingAd();
     }
   });
 })();

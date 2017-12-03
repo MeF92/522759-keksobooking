@@ -111,7 +111,7 @@
   renderAd(adverts[0]);
   mapElement.insertBefore(similarAdElement, mapFiltersContainerElement);
   similarAdElement.classList.add('hidden');
-
+  // Делаем пины интерактивными
   var mapPinsElements = document.querySelectorAll('.map__pin:not(.map__pin--main)');
   var mapPinMainElement = document.querySelector('.map__pin--main');
   var adCloseElement = similarAdElement.querySelector('.popup__close');
@@ -162,5 +162,33 @@
       onClosingAd();
     }
   });
-})();
+  // Валидация формы
+  var timeInElement = document.querySelector('#timein');
+  var timeOutElement = document.querySelector('#timeout');
+  timeInElement.addEventListener('click', function (evt) {
+    timeOutElement.value = evt.target.value;
+  });
+  timeOutElement.addEventListener('click', function (evt) {
+    timeInElement.value = evt.target.value;
+  });
 
+  var apartmentTypeElement = document.querySelector('#type');
+  var priceElement = document.querySelector('#price');
+  apartmentTypeElement.addEventListener('click', function (evt) {
+    if (evt.target.value === 'flat') {
+      priceElement.setAttribute('min', '1000');
+    } else if (evt.target.value === 'bungalo') {
+      priceElement.setAttribute('min', '0');
+    } else if (evt.target.value === 'house') {
+      priceElement.setAttribute('min', '5000');
+    } else if (evt.target.value === 'palace') {
+      priceElement.setAttribute('min', '10000');
+    }
+  });
+
+  var numberOfRoomElement = document.querySelector('#room_number');
+  var guestCapacityElement = document.querySelector('#capacity');
+  numberOfRoomElement.addEventListener('click', function (evt) {
+    guestCapacityElement.value = (evt.target.value === '100') ? '0' : evt.target.value;
+  });
+})();

@@ -111,7 +111,7 @@
   renderAd(adverts[0]);
   mapElement.insertBefore(similarAdElement, mapFiltersContainerElement);
   similarAdElement.classList.add('hidden');
-
+  // Делаем пины интерактивными
   var mapPinsElements = document.querySelectorAll('.map__pin:not(.map__pin--main)');
   var mapPinMainElement = document.querySelector('.map__pin--main');
   var adCloseElement = similarAdElement.querySelector('.popup__close');
@@ -122,10 +122,10 @@
     if (currentActivePinElement) {
       currentActivePinElement.classList.remove('map__pin--active');
     }
-    evt.target.classList.add('map__pin--active');
-    renderAd(adverts[evt.target.getAttribute('ad-id')]);
+    evt.currentTarget.classList.add('map__pin--active');
+    renderAd(adverts[evt.currentTarget.getAttribute('ad-id')]);
     similarAdElement.classList.remove('hidden');
-    currentActivePinElement = evt.target;
+    currentActivePinElement = evt.currentTarget;
   };
 
   var onClosingAd = function () {
@@ -141,17 +141,19 @@
     }
   });
 
-  mapPinsContainerElement.addEventListener('click', function (evt) {
-    if (evt.target !== mapPinMainElement) {
-      onPinClick(evt);
-    }
-  });
+  for (var i = 0; i <= mapPinsElements.length - 1; i++) {
+    mapPinsElements[i].addEventListener('click', function (evt) {
+      if (evt.currentTarget !== mapPinMainElement) {
+        onPinClick(evt);
+      }
+    });
 
-  mapPinsContainerElement.addEventListener('keydown', function (evt) {
-    if (evt.target !== mapPinMainElement && evt.keyCode === ENTER_KEYCODE) {
-      onPinClick(evt);
-    }
-  });
+    mapPinsElements[i].addEventListener('keydown', function (evt) {
+      if (evt.currentTarget !== mapPinMainElement && evt.keyCode === ENTER_KEYCODE) {
+        onPinClick(evt);
+      }
+    });
+  }
 
   adCloseElement.addEventListener('click', function () {
     onClosingAd();
@@ -162,5 +164,38 @@
       onClosingAd();
     }
   });
-})();
+  // Валидация формы
+  var timeInElement = document.querySelector('#timein');
+  var timeOutElement = document.querySelector('#timeout');
+  timeInElement.addEventListener('click', function (evt) {
+    timeOutElement.value = evt.target.value;
+  });
+  timeOutElement.addEventListener('click', function (evt) {
+    timeInElement.value = evt.target.value;
+  });
 
+  var apartmentTypeElement = document.querySelector('#type');
+  var priceElement = document.querySelector('#price');
+  apartmentTypeElement.addEventListener('click', function (evt) {
+    switch (evt.target.value) {
+      case 'flat':
+        priceElement.setAttribute('min', '1000');
+        break;
+      case 'bungalo':
+        priceElement.setAttribute('min', '0');
+        break;
+      case 'house':
+        priceElement.setAttribute('min', '5000');
+        break;
+      case 'palace':
+        priceElement.setAttribute('min', '10000');
+        break;
+    }
+  });
+
+  var numberOfRoomElement = document.querySelector('#room_number');
+  var guestCapacityElement = document.querySelector('#capacity');
+  numberOfRoomElement.addEventListener('click', function (evt) {
+    guestCapacityElement.value = (evt.target.value === '100') ? '0' : evt.target.value;
+  });
+})();

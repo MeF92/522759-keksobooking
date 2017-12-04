@@ -175,14 +175,19 @@
   var apartmentTypeElement = document.querySelector('#type');
   var priceElement = document.querySelector('#price');
   apartmentTypeElement.addEventListener('click', function (evt) {
-    if (evt.target.value === 'flat') {
-      priceElement.setAttribute('min', '1000');
-    } else if (evt.target.value === 'bungalo') {
-      priceElement.setAttribute('min', '0');
-    } else if (evt.target.value === 'house') {
-      priceElement.setAttribute('min', '5000');
-    } else if (evt.target.value === 'palace') {
-      priceElement.setAttribute('min', '10000');
+    switch (evt.target.value) {
+      case 'flat':
+        priceElement.setAttribute('min', '1000');
+        break;
+      case 'bungalo':
+        priceElement.setAttribute('min', '0');
+        break;
+      case 'house':
+        priceElement.setAttribute('min', '5000');
+        break;
+      case 'palace':
+        priceElement.setAttribute('min', '10000');
+        break;
     }
   });
 

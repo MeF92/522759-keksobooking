@@ -122,10 +122,10 @@
     if (currentActivePinElement) {
       currentActivePinElement.classList.remove('map__pin--active');
     }
-    evt.target.classList.add('map__pin--active');
-    renderAd(adverts[evt.target.getAttribute('ad-id')]);
+    evt.currentTarget.classList.add('map__pin--active');
+    renderAd(adverts[evt.currentTarget.getAttribute('ad-id')]);
     similarAdElement.classList.remove('hidden');
-    currentActivePinElement = evt.target;
+    currentActivePinElement = evt.currentTarget;
   };
 
   var onClosingAd = function () {
@@ -141,17 +141,19 @@
     }
   });
 
-  mapPinsContainerElement.addEventListener('click', function (evt) {
-    if (evt.target !== mapPinMainElement) {
-      onPinClick(evt);
-    }
-  });
+  for (var i = 0; i <= mapPinsElements.length - 1; i++) {
+    mapPinsElements[i].addEventListener('click', function (evt) {
+      if (evt.currentTarget !== mapPinMainElement) {
+        onPinClick(evt);
+      }
+    });
 
-  mapPinsContainerElement.addEventListener('keydown', function (evt) {
-    if (evt.target !== mapPinMainElement && evt.keyCode === ENTER_KEYCODE) {
-      onPinClick(evt);
-    }
-  });
+    mapPinsElements[i].addEventListener('keydown', function (evt) {
+      if (evt.currentTarget !== mapPinMainElement && evt.keyCode === ENTER_KEYCODE) {
+        onPinClick(evt);
+      }
+    });
+  }
 
   adCloseElement.addEventListener('click', function () {
     onClosingAd();

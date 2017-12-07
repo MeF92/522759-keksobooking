@@ -3,8 +3,8 @@
 // Далем пины интерактивными и выводим соответствующие объявление
 (function () {
   var card = window.card;
+  var map = window.map;
   var mapPinsElements = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-  var mapPinMainElement = document.querySelector('.map__pin--main');
   var adCloseElement = card.similarAdElement.querySelector('.popup__close');
   var noticeFormElement = document.querySelector('.notice__form');
   var currentActivePinElement = null;
@@ -24,7 +24,7 @@
     currentActivePinElement.classList.remove('map__pin--active');
   };
 
-  mapPinMainElement.addEventListener('mouseup', function () {
+  map.mapPinMainElement.addEventListener('mouseup', function () {
     card.mapElement.classList.remove('map--faded');
     noticeFormElement.classList.remove('notice__form--disabled');
     for (var i = 0; i <= mapPinsElements.length - 1; i++) {
@@ -34,13 +34,13 @@
 
   for (var i = 0; i <= mapPinsElements.length - 1; i++) {
     mapPinsElements[i].addEventListener('click', function (evt) {
-      if (evt.currentTarget !== mapPinMainElement) {
+      if (evt.currentTarget !== map.mapPinMainElement) {
         onPinClick(evt);
       }
     });
 
     mapPinsElements[i].addEventListener('keydown', function (evt) {
-      if (evt.currentTarget !== mapPinMainElement && evt.keyCode === window.data.ENTER_KEYCODE) {
+      if (evt.currentTarget !== map.mapPinMainElement && evt.keyCode === window.data.ENTER_KEYCODE) {
         onPinClick(evt);
       }
     });

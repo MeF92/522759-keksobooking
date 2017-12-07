@@ -27,8 +27,50 @@
 
   var mapPinsContainerElement = document.querySelector('.map__pins');
   mapPinsContainerElement.appendChild(createFragmentElement(adverts));
+  // Добавляем возможность передвигать центральный пин
+  var mapPinMainElement = document.querySelector('.map__pin--main');
+  var addressElement = document.querySelector('#address');
+  mapPinMainElement.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      if (moveEvt.clientY >= 100 && moveEvt.clientY <= (650 - window.pageYOffset)) {
+        moveEvt.preventDefault();
+
+        var shift = {
+          x: startCoords.x - moveEvt.clientX,
+          y: startCoords.y - moveEvt.clientY
+        };
+
+        startCoords = {
+          x: moveEvt.clientX,
+          y: moveEvt.clientY
+        };
+
+        mapPinMainElement.style.top = (mapPinMainElement.offsetTop - shift.y) + 'px';
+        mapPinMainElement.style.left = (mapPinMainElement.offsetLeft - shift.x) + 'px';
+        addressElement.value = 'x: ' + (mapPinMainElement.offsetLeft - shift.x) + ', y: ' + (mapPinMainElement.offsetTop - shift.y);
+      }
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 
   window.map = {
-    adverts: adverts
+    adverts: adverts,
+    mapPinMainElement: mapPinMainElement
   };
 })();

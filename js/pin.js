@@ -4,7 +4,6 @@
 (function () {
   var card = window.card;
   var mapPinsElements = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-  var mapPinMainElement = document.querySelector('.map__pin--main');
   var adCloseElement = card.similarAdElement.querySelector('.popup__close');
   var noticeFormElement = document.querySelector('.notice__form');
   var currentActivePinElement = null;
@@ -24,6 +23,7 @@
     currentActivePinElement.classList.remove('map__pin--active');
   };
 
+  var mapPinMainElement = document.querySelector('.map__pin--main');
   mapPinMainElement.addEventListener('mouseup', function () {
     card.mapElement.classList.remove('map--faded');
     noticeFormElement.classList.remove('notice__form--disabled');

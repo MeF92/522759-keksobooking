@@ -3,7 +3,6 @@
 // Далем пины интерактивными и выводим соответствующие объявление
 (function () {
   var card = window.card;
-  var map = window.map;
   var mapPinsElements = document.querySelectorAll('.map__pin:not(.map__pin--main)');
   var adCloseElement = card.similarAdElement.querySelector('.popup__close');
   var noticeFormElement = document.querySelector('.notice__form');

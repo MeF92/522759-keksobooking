@@ -39,7 +39,7 @@
     };
 
     var onMouseMove = function (moveEvt) {
-      if (moveEvt.clientY >= 100 && moveEvt.clientY <= (650 - window.pageYOffset)) {
+      if (moveEvt.clientY >= 100 && moveEvt.clientY <= (650 - window.pageYOffset) && moveEvt.clientX >= 210 && moveEvt.clientX <= 1370) {
         moveEvt.preventDefault();
 
         var shift = {
@@ -71,6 +71,5 @@
 
   window.map = {
     adverts: adverts,
-    mapPinMainElement: mapPinMainElement
   };
 })();

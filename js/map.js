@@ -70,6 +70,6 @@
   });
 
   window.map = {
-    adverts: adverts,
+    adverts: adverts
   };
 })();

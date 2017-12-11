@@ -1,38 +1,31 @@
 'use strict';
 
-// Валидация формы
+// Синхронизация полей формы
 (function () {
   var timeInElement = document.querySelector('#timein');
   var timeOutElement = document.querySelector('#timeout');
-  timeInElement.addEventListener('click', function (evt) {
-    timeOutElement.value = evt.target.value;
-  });
-  timeOutElement.addEventListener('click', function (evt) {
-    timeInElement.value = evt.target.value;
-  });
+  var timeInHours = ['12:00', '13:00', '14:00'];
+  var timeOutHours = ['12:00', '13:00', '14:00'];
+
+  var syncValues = function (element, value) {
+    element.value = value;
+  };
+  window.synchronizeFields.synchronizeFields(timeInElement, timeOutElement, timeInHours, timeOutHours, syncValues, true);
 
   var apartmentTypeElement = document.querySelector('#type');
   var priceElement = document.querySelector('#price');
-  apartmentTypeElement.addEventListener('click', function (evt) {
-    switch (evt.target.value) {
-      case 'flat':
-        priceElement.setAttribute('min', '1000');
-        break;
-      case 'bungalo':
-        priceElement.setAttribute('min', '0');
-        break;
-      case 'house':
-        priceElement.setAttribute('min', '5000');
-        break;
-      case 'palace':
-        priceElement.setAttribute('min', '10000');
-        break;
-    }
-  });
+  var apartmentTypes = ['flat', 'bungalo', 'house', 'palace'];
+  var minPrices = ['1000', '0', '5000', '10000'];
+
+  var syncValueWithMin = function (element, value) {
+    element.min = value;
+  };
+  window.synchronizeFields.synchronizeFields(apartmentTypeElement, priceElement, apartmentTypes, minPrices, syncValueWithMin, true);
 
   var numberOfRoomElement = document.querySelector('#room_number');
   var guestCapacityElement = document.querySelector('#capacity');
-  numberOfRoomElement.addEventListener('click', function (evt) {
-    guestCapacityElement.value = (evt.target.value === '100') ? '0' : evt.target.value;
-  });
+  var numberOfRooms = ['1', '2', '3', '100'];
+  var numberOfGuests = ['1', '2', '3', '0'];
+
+  window.synchronizeFields.synchronizeFields(numberOfRoomElement, guestCapacityElement, numberOfRooms, numberOfGuests, syncValues);
 })();

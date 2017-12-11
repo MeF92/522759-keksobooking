@@ -29,8 +29,5 @@
   var numberOfRooms = ['1', '2', '3', '100'];
   var numberOfGuests = ['1', '2', '3', '0'];
 
-  var syncRoomsWithGuests = function (element, value) {
-    element.value = value;
-  };
-  window.synchronizeFields.synchronizeFields(numberOfRoomElement, guestCapacityElement, numberOfRooms, numberOfGuests, syncRoomsWithGuests);
+  window.synchronizeFields.synchronizeFields(numberOfRoomElement, guestCapacityElement, numberOfRooms, numberOfGuests, syncValues);
 })();

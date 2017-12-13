@@ -12,7 +12,7 @@
     similarAdElement.querySelector('p small').textContent = ad.offer.address;
     similarAdElement.querySelector('.popup__price').innerHTML = ad.offer.price + '&#x20bd;/ночь';
     similarAdElement.querySelector('h4').textContent = window.data.APARTMENT_TYPE_DISPLAY_NAME[ad.offer.type];
-    similarAdElement.querySelector('p:nth-of-type(3)').textContent = ad.offer.rooms + ' ' + window.data.ROOMS_ENDING[ad.offer.rooms] + ' для ' + ad.offer.guests + ' гостей';
+    similarAdElement.querySelector('p:nth-of-type(3)').textContent = ad.offer.rooms + ' ' + window.data.ROOMS_ENDING[ad.offer.rooms] + ' для ' + ad.offer.guests + ' ' + window.data.GUESTS_ENDING[ad.offer.guests];
     similarAdElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
     for (var i = 0; i <= ad.offer.features.length - 1; i++) {
@@ -27,13 +27,11 @@
 
   var mapElement = document.querySelector('.map');
   var mapFiltersContainerElement = document.querySelector('.map__filters-container');
-  renderAd(window.map.adverts[0]);
   mapElement.insertBefore(similarAdElement, mapFiltersContainerElement);
   similarAdElement.classList.add('hidden');
 
   window.card = {
     similarAdElement: similarAdElement,
-    mapElement: mapElement,
     renderAd: renderAd
   };
 })();

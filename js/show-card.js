@@ -10,7 +10,7 @@
       currentActivePinElement.classList.remove('map__pin--active');
     }
     evt.currentTarget.classList.add('map__pin--active');
-    card.renderAd(window.map.adverts[evt.currentTarget.getAttribute('ad-id')]);
+    card.renderAd(window.map.getAdverts()[evt.currentTarget.getAttribute('ad-id')]);
     card.similarAdElement.classList.remove('hidden');
     currentActivePinElement = evt.currentTarget;
   };

@@ -2,7 +2,8 @@
 
 // Работа с картой
 (function () {
-  var adverts = window.data.createAds();
+  var adverts;
+  var mapPinsContainerElement = document.querySelector('.map__pins');
 
   var createMapPin = function (ad, id) {
     var mapPinsContentElement = document.createElement('button');
@@ -25,8 +26,22 @@
     return fragmentElement;
   };
 
-  var mapPinsContainerElement = document.querySelector('.map__pins');
-  mapPinsContainerElement.appendChild(createFragmentElement(adverts));
+  var onSuccess = function (advs) {
+    mapPinsContainerElement.appendChild(createFragmentElement(advs));
+    adverts = advs;
+    window.makePinsActive();
+  };
+
+  var onError = function (errorMessage) {
+    mapPinMainElement.addEventListener('mouseup', function () {
+      var node = document.createElement('div');
+      node.style = 'z-index: 100; width: 1200px; position: absolute; left: 0; right: 0; margin: 0 auto; text-align: center; background-color: red;';
+      node.textContent = errorMessage;
+      document.body.insertBefore(node, document.body.firstChild);
+    });
+  };
+
+  window.backend.load(onSuccess, onError);
   // Добавляем возможность передвигать центральный пин
   var mapPinMainElement = document.querySelector('.map__pin--main');
   var addressElement = document.querySelector('#address');
@@ -70,6 +85,9 @@
   });
 
   window.map = {
-    adverts: adverts
+    getAdverts: function () {
+      return adverts;
+    },
+    onError: onError
   };
 })();

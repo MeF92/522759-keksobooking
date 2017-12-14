@@ -34,10 +34,10 @@
 
   var onError = function (errorMessage) {
     mapPinMainElement.addEventListener('mouseup', function () {
-      var node = document.createElement('div');
-      node.style = 'z-index: 100; width: 1200px; position: absolute; left: 0; right: 0; margin: 0 auto; text-align: center; background-color: red;';
-      node.textContent = errorMessage;
-      document.body.insertBefore(node, document.body.firstChild);
+      var nodeElement = document.createElement('div');
+      nodeElement.style = 'z-index: 100; width: 1200px; position: absolute; left: 0; right: 0; margin: 0 auto; text-align: center; background-color: red;';
+      nodeElement.textContent = errorMessage;
+      document.body.insertBefore(nodeElement, document.body.firstChild);
     });
   };
 

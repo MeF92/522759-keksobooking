@@ -1,6 +1,6 @@
 'use strict';
 
-// Настройка работы с сервером
+// Настраиваем работу с сервером
 (function () {
   var SERVER_URL = 'https://1510.dump.academy/keksobooking';
 

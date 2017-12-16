@@ -1,6 +1,6 @@
 'use strict';
 
-// Синхронизация полей формы
+// Синхронизируем поля формы
 (function () {
   var timeInElement = document.querySelector('#timein');
   var timeOutElement = document.querySelector('#timeout');

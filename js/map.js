@@ -1,6 +1,6 @@
 'use strict';
 
-// Работа с картой
+// Создаём пины на карте
 (function () {
   var adverts;
   var mapPinsContainerElement = document.querySelector('.map__pins');

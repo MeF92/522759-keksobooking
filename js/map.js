@@ -2,32 +2,53 @@
 
 // Создаём пины на карте
 (function () {
-  var adverts;
+  var adverts = [];
   var mapPinsContainerElement = document.querySelector('.map__pins');
 
-  var createMapPin = function (ad, id) {
+  var createMapPin = function (ad, id, currentPins) {
     var mapPinsContentElement = document.createElement('button');
     var buttonWidth = 40;
     var buttonHeight = 40;
     mapPinsContentElement.style.left = (ad.location.x - buttonWidth / 2) + 'px';
     mapPinsContentElement.style.top = (ad.location.y - buttonHeight) + 'px';
-    mapPinsContentElement.className = 'map__pin hidden';
+    mapPinsContentElement.className = 'map__pin';
     mapPinsContentElement.setAttribute('ad-id', id);
     mapPinsContentElement.innerHTML = '<img src="' + ad.author.avatar + '" width="' + buttonWidth + '" height="' + buttonHeight + '" draggable="false">';
+
+    mapPinsContentElement.addEventListener('click', function (evt) {
+      if (evt.currentTarget !== mapPinMainElement) {
+        window.showCard.showCard(evt, currentPins);
+      }
+    });
+
+    mapPinsContentElement.addEventListener('keydown', function (evt) {
+      if (evt.currentTarget !== mapPinMainElement && evt.keyCode === window.data.ENTER_KEYCODE) {
+        window.showCard.showCard(evt, currentPins);
+      }
+    });
 
     return mapPinsContentElement;
   };
 
-  var createFragmentElement = function (ads) {
+  window.updatePins = function () {
+    mapPinsContainerElement.innerHTML = '';
+    mapPinsContainerElement.appendChild(mapPinMainElement);
+    var sameTypeOfFlat = adverts.filter(function (it) {
+      return it.offer.type === 'flat';
+    });
+    window.insertMapPins(sameTypeOfFlat);
+  };
+
+  window.insertMapPins = function (ads) {
+    var numberOfPins = ads.length > 5 ? 5 : ads.length;
     var fragmentElement = document.createDocumentFragment();
-    for (var i = 0; i < ads.length; i++) {
-      fragmentElement.appendChild(createMapPin(ads[i], i));
+    for (var i = 0; i < numberOfPins; i++) {
+      fragmentElement.appendChild(createMapPin(ads[i], i, ads));
     }
-    return fragmentElement;
+    mapPinsContainerElement.appendChild(fragmentElement);
   };
 
   var onSuccess = function (advs) {
-    mapPinsContainerElement.appendChild(createFragmentElement(advs));
     adverts = advs;
     window.makePinsActive();
   };

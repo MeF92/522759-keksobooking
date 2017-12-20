@@ -26,9 +26,9 @@
     } else if (filters.price === 'low') {
       return advert.offer.price < 10000;
     } else if (filters.price === 'middle') {
-      return advert.offer.price > 10000 && advert.offer.price < 50000;
+      return advert.offer.price >= 10000 && advert.offer.price < 50000;
     }
-    return advert.offer.price > 50000;
+    return advert.offer.price >= 50000;
   };
 
   var filterByRooms = function (advert) {

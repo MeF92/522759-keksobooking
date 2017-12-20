@@ -1,6 +1,6 @@
 'use strict';
 
-// Синхронизация полей формы
+// Синхронизируем поля формы
 (function () {
   var timeInElement = document.querySelector('#timein');
   var timeOutElement = document.querySelector('#timeout');
@@ -28,12 +28,13 @@
   var numberOfGuests = ['1', '2', '3', '0'];
 
   window.synchronizeFields.synchronizeFields(numberOfRoomElement, guestCapacityElement, numberOfRooms, numberOfGuests, syncValues);
+
   // Отправка данных формы
   var noticeFormElement = document.querySelector('.notice__form');
   noticeFormElement.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(noticeFormElement), function () {
       noticeFormElement.reset();
-    }, window.map.onError);
+    }, window.pin.onError);
     evt.preventDefault();
   });
 })();

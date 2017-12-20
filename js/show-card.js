@@ -5,12 +5,12 @@
   var card = window.card;
   var currentActivePinElement = null;
 
-  var showCard = function (evt) {
+  var showCard = function (evt, arr) {
     if (currentActivePinElement) {
       currentActivePinElement.classList.remove('map__pin--active');
     }
     evt.currentTarget.classList.add('map__pin--active');
-    card.renderAd(window.map.getAdverts()[evt.currentTarget.getAttribute('ad-id')]);
+    card.renderAd(arr[evt.currentTarget.getAttribute('ad-id')]);
     card.similarAdElement.classList.remove('hidden');
     currentActivePinElement = evt.currentTarget;
   };

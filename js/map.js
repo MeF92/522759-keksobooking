@@ -39,35 +39,15 @@
   var housingRoomsElement = document.querySelector('#housing-rooms');
   var housingGuestsElement = document.querySelector('#housing-guests');
   var housingFeaturesElement = document.querySelector('#housing-features');
-  var featuresWifiElement = document.querySelector('#filter-wifi');
-  var featuresDishwasherElement = document.querySelector('#filter-dishwasher');
-  var featuresParkingElement = document.querySelector('#filter-parking');
-  var featuresWasherElement = document.querySelector('#filter-washer');
-  var featuresElevatorElement = document.querySelector('#filter-elevator');
-  var featuresConditionerElement = document.querySelector('#filter-conditioner');
 
-  var filterByWifi = function (advert) {
-    return filters.wifi === null || advert.offer.features[0] === filters.wifi;
+  var checkForSubset = function (master, slave) {
+    return slave.some(function (feature) {
+      return master.indexOf(feature) !== -1;
+    });
   };
 
-  var filterByDishwasher = function (advert) {
-    return filters.dishwasher === null || advert.offer.features[1] === filters.dishwasher;
-  };
-
-  var filterByParking = function (advert) {
-    return filters.parking === null || advert.offer.features[2] === filters.parking;
-  };
-
-  var filterByWasher = function (advert) {
-    return filters.washer === null || advert.offer.features[3] === filters.washer;
-  };
-
-  var filterByElevator = function (advert) {
-    return filters.elevator === null || advert.offer.features[4] === filters.elevator;
-  };
-
-  var filterByConditioner = function (advert) {
-    return filters.conditioner === null || advert.offer.features[5] === filters.conditioner;
+  var filterByFeatures = function (advert) {
+    return checkForSubset(advert.offer.features, filters.features);
   };
 
   var filterByType = function (advert) {
@@ -98,12 +78,7 @@
     price: null,
     rooms: null,
     guests: null,
-    wifi: null,
-    dishwasher: null,
-    parking: null,
-    washer: null,
-    elevator: null,
-    conditioner: null
+    features: []
   };
 
   var runFilters = function () {
@@ -112,12 +87,7 @@
         .filter(filterByPrice)
         .filter(filterByRooms)
         .filter(filterByGuests)
-        .filter(filterByWifi)
-        .filter(filterByDishwasher)
-        .filter(filterByParking)
-        .filter(filterByWasher)
-        .filter(filterByElevator)
-        .filter(filterByConditioner);
+        .filter(filterByFeatures);
 
     window.updatePins();
     window.insertMapPins(filtredAds);
@@ -159,56 +129,12 @@
     runFilters();
   });
 
-  featuresWifiElement.addEventListener('change', function (evt) {
+  housingFeaturesElement.addEventListener('change', function (evt) {
     if (evt.target.checked) {
-      filters.wifi = evt.target.value;
+      filters.features.push(evt.target.value);
     } else {
-      filters.wifi = null;
-    }
-    runFilters();
-  });
-
-  featuresDishwasherElement.addEventListener('change', function (evt) {
-    if (evt.target.checked) {
-      filters.dishwasher = evt.target.value;
-    } else {
-      filters.dishwasher = null;
-    }
-    runFilters();
-  });
-
-  featuresParkingElement.addEventListener('change', function (evt) {
-    if (evt.target.checked) {
-      filters.parking = evt.target.value;
-    } else {
-      filters.parking = null;
-    }
-    runFilters();
-  });
-
-  featuresWasherElement.addEventListener('change', function (evt) {
-    if (evt.target.checked) {
-      filters.washer = evt.target.value;
-    } else {
-      filters.washer = null;
-    }
-    runFilters();
-  });
-
-  featuresElevatorElement.addEventListener('change', function (evt) {
-    if (evt.target.checked) {
-      filters.elevator = evt.target.value;
-    } else {
-      filters.elevator = null;
-    }
-    runFilters();
-  });
-
-  featuresConditionerElement.addEventListener('change', function (evt) {
-    if (evt.target.checked) {
-      filters.conditioner = evt.target.value;
-    } else {
-      filters.conditioner = null;
+      var index = filters.features.indexOf(evt.target.value);
+      filters.features.slice(index, 1);
     }
     runFilters();
   });

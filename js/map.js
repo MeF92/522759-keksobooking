@@ -47,7 +47,7 @@
   };
 
   var filterByFeatures = function (advert) {
-    return checkForSubset(advert.offer.features, filters.features);
+    return filters.features.length === 0 || checkForSubset(advert.offer.features, filters.features);
   };
 
   var filterByType = function (advert) {

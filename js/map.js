@@ -41,7 +41,7 @@
   var housingFeaturesElement = document.querySelector('#housing-features');
 
   var checkForSubset = function (master, slave) {
-    return slave.some(function (feature) {
+    return slave.every(function (feature) {
       return master.indexOf(feature) !== -1;
     });
   };
@@ -99,7 +99,7 @@
     } else {
       filters.type = null;
     }
-    runFilters();
+    window.debounce(runFilters);
   });
 
   housingPriceElement.addEventListener('change', function (evt) {
@@ -108,7 +108,7 @@
     } else {
       filters.price = null;
     }
-    runFilters();
+    window.debounce(runFilters);
   });
 
   housingRoomsElement.addEventListener('change', function (evt) {
@@ -117,7 +117,7 @@
     } else {
       filters.rooms = null;
     }
-    runFilters();
+    window.debounce(runFilters);
   });
 
   housingGuestsElement.addEventListener('change', function (evt) {
@@ -126,7 +126,7 @@
     } else {
       filters.guests = null;
     }
-    runFilters();
+    window.debounce(runFilters);
   });
 
   housingFeaturesElement.addEventListener('change', function (evt) {
@@ -134,9 +134,9 @@
       filters.features.push(evt.target.value);
     } else {
       var index = filters.features.indexOf(evt.target.value);
-      filters.features.slice(index, 1);
+      filters.features.splice(index, 1);
     }
-    runFilters();
+    window.debounce(runFilters);
   });
 
   window.insertMapPins = function (ads) {

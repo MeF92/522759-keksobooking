@@ -6,8 +6,10 @@
   var similarAdElement = similarAdsTemplateElement.cloneNode(true);
   var renderAd = function (ad) {
     var popupFeaturesElement = similarAdElement.querySelector('.popup__features');
+    var popupPicturesElement = similarAdElement.querySelector('.popup__pictures li img');
     popupFeaturesElement.innerHTML = '';
 
+    similarAdElement.querySelector('.popup__avatar').setAttribute('src', ad.author.avatar);
     similarAdElement.querySelector('h3').textContent = ad.offer.title;
     similarAdElement.querySelector('p small').textContent = ad.offer.address;
     similarAdElement.querySelector('.popup__price').innerHTML = ad.offer.price + '&#x20bd;/ночь';
@@ -22,7 +24,9 @@
     }
 
     similarAdElement.querySelector('p:nth-of-type(5)').textContent = ad.offer.description;
-    similarAdElement.querySelector('.popup__pictures li img').setAttribute('src', ad.author.avatar);
+    popupPicturesElement.style.width = '100px';
+    popupPicturesElement.style.height = '70px';
+    popupPicturesElement.setAttribute('src', ad.offer.photos[0]);
   };
 
   var mapElement = document.querySelector('.map');

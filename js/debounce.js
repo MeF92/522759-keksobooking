@@ -1,5 +1,6 @@
 'use strict';
 
+// Создаём функцию дебаунса
 (function () {
   var DEBOUNCE_INTERVAL = 500;
 

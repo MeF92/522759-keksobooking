@@ -1,6 +1,6 @@
 'use strict';
 
-// Функции синхронизации полей
+// Создаём Функцию синхронизации полей
 (function () {
   var synchronizeFields = function (field1, field2, data1, data2, action, twoWaySync) {
     field1.addEventListener('click', function (evt) {

@@ -29,7 +29,7 @@
 
   window.synchronizeFields.synchronizeFields(numberOfRoomElement, guestCapacityElement, numberOfRooms, numberOfGuests, syncValues);
 
-  // Отправка данных формы
+  // Отправляем данные формы
   var noticeFormElement = document.querySelector('.notice__form');
   noticeFormElement.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(noticeFormElement), function () {
@@ -37,4 +37,7 @@
     }, window.pin.onError);
     evt.preventDefault();
   });
+
+  // Загружаем аватар и фотографии жилья
+
 })();

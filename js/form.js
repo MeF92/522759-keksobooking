@@ -2,6 +2,8 @@
 
 // Синхронизируем поля формы
 (function () {
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
   var timeInElement = document.querySelector('#timein');
   var timeOutElement = document.querySelector('#timeout');
   var timeInHours = ['12:00', '13:00', '14:00'];
@@ -30,8 +32,6 @@
   window.synchronizeFields.synchronizeFields(numberOfRoomElement, guestCapacityElement, numberOfRooms, numberOfGuests, syncValues);
 
   // Загружаем аватар и фотографии жилья
-  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-
   var avatarChooserElement = document.querySelector('.notice__photo input[type=file]');
   var noticePreviewElement = document.querySelector('.notice__preview');
   noticePreviewElement.style.width = '130px';
@@ -39,8 +39,16 @@
   avatarPreviewElement.setAttribute('width', '100px');
   avatarPreviewElement.setAttribute('height', '96px');
 
-  avatarChooserElement.addEventListener('change', function () {
-    var file = avatarChooserElement.files[0];
+  var onAvatarLoad = function (evt) {
+    avatarPreviewElement.src = evt.target.result;
+  };
+
+  var onPhotoLoad = function (evt) {
+    photoContainerElement.appendChild(createImgElement(evt.target.result));
+  };
+
+  var onImageUpdate = function (evt, action) {
+    var file = evt.target.files[0];
     var fileName = file.name.toLowerCase();
 
     var matches = FILE_TYPES.some(function (it) {
@@ -50,16 +58,21 @@
     if (matches) {
       var reader = new FileReader();
 
-      reader.addEventListener('load', function () {
-        avatarPreviewElement.src = reader.result;
-      });
+      reader.addEventListener('load', action);
 
       reader.readAsDataURL(file);
     }
+  };
+
+  avatarChooserElement.addEventListener('change', function (evt) {
+    onImageUpdate(evt, onAvatarLoad);
   });
 
   var photoChooserElement = document.querySelector('.form__photo-container input[type=file]');
   var photoPreviewElement = document.querySelector('.form__photo-container');
+  var photoContainerElement = document.createElement('div');
+  photoContainerElement.className = 'photo-container';
+  photoPreviewElement.appendChild(photoContainerElement);
 
   var createImgElement = function (source) {
     var imgElement = document.createElement('img');
@@ -71,29 +84,16 @@
     return imgElement;
   };
 
-  photoChooserElement.addEventListener('change', function () {
-    var file = photoChooserElement.files[0];
-    var fileName = file.name.toLowerCase();
-
-    var matches = FILE_TYPES.some(function (it) {
-      return fileName.endsWith(it);
-    });
-
-    if (matches) {
-      var reader = new FileReader();
-
-      reader.addEventListener('load', function () {
-        photoPreviewElement.appendChild(createImgElement(reader.result));
-      });
-
-      reader.readAsDataURL(file);
-    }
+  photoChooserElement.addEventListener('change', function (evt) {
+    onImageUpdate(evt, onPhotoLoad);
   });
 
   // Отправляем данные формы
   var noticeFormElement = document.querySelector('.notice__form');
   noticeFormElement.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(noticeFormElement), function () {
+      avatarPreviewElement.src = 'img/muffin.png';
+      photoContainerElement.innerHTML = '';
       noticeFormElement.reset();
     }, window.pin.onError);
     evt.preventDefault();

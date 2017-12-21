@@ -61,40 +61,29 @@
     window.pin.insertMapPins(filtredAds);
   };
 
-  housingTypeElement.addEventListener('change', function (evt) {
+  var onFilterChange = function (evt, key) {
     if (evt.target.value !== 'any') {
-      filters.type = evt.target.value;
+      filters[key] = evt.target.value;
     } else {
-      filters.type = null;
+      filters[key] = null;
     }
     window.debounce(runFilters);
+  };
+
+  housingTypeElement.addEventListener('change', function (evt) {
+    onFilterChange(evt, 'type');
   });
 
   housingPriceElement.addEventListener('change', function (evt) {
-    if (evt.target.value !== 'any') {
-      filters.price = evt.target.value;
-    } else {
-      filters.price = null;
-    }
-    window.debounce(runFilters);
+    onFilterChange(evt, 'price');
   });
 
   housingRoomsElement.addEventListener('change', function (evt) {
-    if (evt.target.value !== 'any') {
-      filters.rooms = evt.target.value;
-    } else {
-      filters.rooms = null;
-    }
-    window.debounce(runFilters);
+    onFilterChange(evt, 'rooms');
   });
 
   housingGuestsElement.addEventListener('change', function (evt) {
-    if (evt.target.value !== 'any') {
-      filters.guests = evt.target.value;
-    } else {
-      filters.guests = null;
-    }
-    window.debounce(runFilters);
+    onFilterChange(evt, 'guests');
   });
 
   housingFeaturesElement.addEventListener('change', function (evt) {

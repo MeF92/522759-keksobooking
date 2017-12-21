@@ -3,6 +3,7 @@
 // Создаём пины на карте
 (function () {
   var mapPinsContainerElement = document.querySelector('.map__pins');
+  var mapPinMainElement = document.querySelector('.map__pin--main');
 
   var createMapPin = function (ad, id, currentPins) {
     var mapPinsContentElement = document.createElement('button');
@@ -16,13 +17,13 @@
 
     mapPinsContentElement.addEventListener('click', function (evt) {
       if (evt.currentTarget !== mapPinMainElement) {
-        window.showCard.showCard(evt, currentPins);
+        window.card.showCard(evt, currentPins);
       }
     });
 
     mapPinsContentElement.addEventListener('keydown', function (evt) {
       if (evt.currentTarget !== mapPinMainElement && evt.keyCode === window.data.ENTER_KEYCODE) {
-        window.showCard.showCard(evt, currentPins);
+        window.card.showCard(evt, currentPins);
       }
     });
     return mapPinsContentElement;
@@ -34,7 +35,6 @@
   };
 
   // Добавляем возможность передвигать центральный пин
-  var mapPinMainElement = document.querySelector('.map__pin--main');
   var addressElement = document.querySelector('#address');
   mapPinMainElement.addEventListener('mousedown', function (evt) {
     evt.preventDefault();

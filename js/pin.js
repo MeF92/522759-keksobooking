@@ -30,12 +30,12 @@
     mapPinMainElement.addEventListener('mouseup', onMouseUp);
 
     adCloseElement.addEventListener('click', function () {
-      window.showCard.hideCard();
+      window.card.hideCard();
     });
 
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.data.ESC_KEYCODE) {
-        window.showCard.hideCard();
+        window.card.hideCard();
       }
     });
   };

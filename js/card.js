@@ -34,8 +34,27 @@
   mapElement.insertBefore(similarAdElement, mapFiltersContainerElement);
   similarAdElement.classList.add('hidden');
 
+  // Показываем/Скрываем объявление
+  var currentActivePinElement = null;
+
+  var showCard = function (evt, arr) {
+    if (currentActivePinElement) {
+      currentActivePinElement.classList.remove('map__pin--active');
+    }
+    evt.currentTarget.classList.add('map__pin--active');
+    renderAd(arr[evt.currentTarget.getAttribute('ad-id')]);
+    similarAdElement.classList.remove('hidden');
+    currentActivePinElement = evt.currentTarget;
+  };
+
+  var hideCard = function () {
+    similarAdElement.classList.add('hidden');
+    currentActivePinElement.classList.remove('map__pin--active');
+  };
+
   window.card = {
-    similarAdElement: similarAdElement,
-    renderAd: renderAd
+    showCard: showCard,
+    hideCard: hideCard,
+    similarAdElement: similarAdElement
   };
 })();

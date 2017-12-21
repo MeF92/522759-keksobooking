@@ -29,6 +29,67 @@
 
   window.synchronizeFields.synchronizeFields(numberOfRoomElement, guestCapacityElement, numberOfRooms, numberOfGuests, syncValues);
 
+  // Загружаем аватар и фотографии жилья
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
+  var avatarChooserElement = document.querySelector('.notice__photo input[type=file]');
+  var noticePreviewElement = document.querySelector('.notice__preview');
+  noticePreviewElement.style.width = '130px';
+  var avatarPreviewElement = document.querySelector('.notice__preview img');
+  avatarPreviewElement.setAttribute('width', '100px');
+  avatarPreviewElement.setAttribute('height', '96px');
+
+  avatarChooserElement.addEventListener('change', function () {
+    var file = avatarChooserElement.files[0];
+    var fileName = file.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        avatarPreviewElement.src = reader.result;
+      });
+
+      reader.readAsDataURL(file);
+    }
+  });
+
+  var photoChooserElement = document.querySelector('.form__photo-container input[type=file]');
+  var photoPreviewElement = document.querySelector('.form__photo-container');
+
+  var createImgElement = function (source) {
+    var imgElement = document.createElement('img');
+    imgElement.setAttribute('width', '70px');
+    imgElement.setAttribute('height', '70px');
+    imgElement.setAttribute('src', '' + source);
+    imgElement.className = 'photo-img';
+
+    return imgElement;
+  };
+
+  photoChooserElement.addEventListener('change', function () {
+    var file = photoChooserElement.files[0];
+    var fileName = file.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        photoPreviewElement.appendChild(createImgElement(reader.result));
+      });
+
+      reader.readAsDataURL(file);
+    }
+  });
+
   // Отправляем данные формы
   var noticeFormElement = document.querySelector('.notice__form');
   noticeFormElement.addEventListener('submit', function (evt) {
@@ -37,7 +98,4 @@
     }, window.pin.onError);
     evt.preventDefault();
   });
-
-  // Загружаем аватар и фотографии жилья
-
 })();

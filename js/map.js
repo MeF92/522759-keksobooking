@@ -37,7 +37,7 @@
   };
 
   var updatePins = function () {
-    var mapPinsElement = mapPinsContainerElement.querySelectorAll('map__pin:not(.map__pin--main)');
+    var mapPinsElement = mapPinsContainerElement.querySelectorAll('.map__pin:not(.map__pin--main)');
     for (var i = 0; i < mapPinsElement.length; i++) {
       mapPinsElement[i].removeEventListener('click', onPinClick);
       mapPinsElement[i].removeEventListener('keydown', onPinKeyDown);

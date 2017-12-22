@@ -8,7 +8,7 @@
       bungalo: 'Бунгало',
       house: 'Дворец'
     },
-    ROOMS_ENDING: [
+    ROOMS_ENDINGS: [
       'комнат',
       'комната',
       'комнаты',
@@ -16,20 +16,20 @@
       'комнаты',
       'комнат'
     ],
-    GUESTS_ENDING: [],
+    GUESTS_ENDINGS: [],
     ESC_KEYCODE: 27,
     ENTER_KEYCODE: 13
   };
 
-  window.data.ROOMS_ENDING.length = 35;
-  window.data.ROOMS_ENDING[35] = 'комнат';
+  window.data.ROOMS_ENDINGS.length = 35;
+  window.data.ROOMS_ENDINGS[35] = 'комнат';
 
   var guestsEndingLength = 100;
   for (var i = 0; i < guestsEndingLength; i++) {
     if (i % 10 === 1 && i !== 11) {
-      window.data.GUESTS_ENDING.push('гостя');
+      window.data.GUESTS_ENDINGS.push('гостя');
     } else {
-      window.data.GUESTS_ENDING.push('гостей');
+      window.data.GUESTS_ENDINGS.push('гостей');
     }
   }
 })();

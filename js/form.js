@@ -6,13 +6,13 @@
 
   var timeInElement = document.querySelector('#timein');
   var timeOutElement = document.querySelector('#timeout');
-  var timeInHours = ['12:00', '13:00', '14:00'];
-  var timeOutHours = ['12:00', '13:00', '14:00'];
+  var timesInHours = ['12:00', '13:00', '14:00'];
+  var timesOutHours = ['12:00', '13:00', '14:00'];
 
   var syncValues = function (element, value) {
     element.value = value;
   };
-  window.synchronizeFields.synchronize(timeInElement, timeOutElement, timeInHours, timeOutHours, syncValues, true);
+  window.synchronizeFields.synchronize(timeInElement, timeOutElement, timesInHours, timesOutHours, syncValues, true);
 
   var apartmentTypeElement = document.querySelector('#type');
   var priceElement = document.querySelector('#price');
@@ -26,10 +26,10 @@
 
   var numberOfRoomElement = document.querySelector('#room_number');
   var guestCapacityElement = document.querySelector('#capacity');
-  var numberOfRooms = ['1', '2', '3', '100'];
-  var numberOfGuests = ['1', '2', '3', '0'];
+  var roomsNumbers = ['1', '2', '3', '100'];
+  var guestsNumbers = ['1', '2', '3', '0'];
 
-  window.synchronizeFields.synchronize(numberOfRoomElement, guestCapacityElement, numberOfRooms, numberOfGuests, syncValues);
+  window.synchronizeFields.synchronize(numberOfRoomElement, guestCapacityElement, roomsNumbers, guestsNumbers, syncValues);
 
   // Загружаем аватар и фотографии жилья
   var avatarChooserElement = document.querySelector('.notice__photo input[type=file]');

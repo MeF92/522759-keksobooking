@@ -57,6 +57,7 @@
         .filter(filterByGuests)
         .filter(filterByFeatures);
 
+    window.card.hideCard();
     window.map.updatePins();
     window.pin.insertMapPins(filtredAds);
   };

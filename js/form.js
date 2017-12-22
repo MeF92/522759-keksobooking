@@ -12,7 +12,7 @@
   var syncValues = function (element, value) {
     element.value = value;
   };
-  window.synchronizeFields.synchronizeFields(timeInElement, timeOutElement, timeInHours, timeOutHours, syncValues, true);
+  window.synchronizeFields.synchronize(timeInElement, timeOutElement, timeInHours, timeOutHours, syncValues, true);
 
   var apartmentTypeElement = document.querySelector('#type');
   var priceElement = document.querySelector('#price');
@@ -22,14 +22,14 @@
   var syncValueWithMin = function (element, value) {
     element.min = value;
   };
-  window.synchronizeFields.synchronizeFields(apartmentTypeElement, priceElement, apartmentTypes, minPrices, syncValueWithMin, true);
+  window.synchronizeFields.synchronize(apartmentTypeElement, priceElement, apartmentTypes, minPrices, syncValueWithMin);
 
   var numberOfRoomElement = document.querySelector('#room_number');
   var guestCapacityElement = document.querySelector('#capacity');
   var numberOfRooms = ['1', '2', '3', '100'];
   var numberOfGuests = ['1', '2', '3', '0'];
 
-  window.synchronizeFields.synchronizeFields(numberOfRoomElement, guestCapacityElement, numberOfRooms, numberOfGuests, syncValues);
+  window.synchronizeFields.synchronize(numberOfRoomElement, guestCapacityElement, numberOfRooms, numberOfGuests, syncValues);
 
   // Загружаем аватар и фотографии жилья
   var avatarChooserElement = document.querySelector('.notice__photo input[type=file]');

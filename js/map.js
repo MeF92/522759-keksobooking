@@ -3,8 +3,23 @@
 // Создаём пины на карте
 (function () {
   var mapPinsContainerElement = document.querySelector('.map__pins');
+  var mapPinMainElement = document.querySelector('.map__pin--main');
+  var currentPins;
 
-  var createMapPin = function (ad, id, currentPins) {
+  var onPinClick = function (evt) {
+    if (evt.currentTarget !== mapPinMainElement) {
+      window.card.showCard(evt, currentPins);
+    }
+  };
+
+  var onPinKeyDown = function (evt) {
+    if (evt.currentTarget !== mapPinMainElement && evt.keyCode === window.data.ENTER_KEYCODE) {
+      window.card.showCard(evt, currentPins);
+    }
+  };
+
+  var createMapPin = function (ad, id, pins) {
+    currentPins = pins;
     var mapPinsContentElement = document.createElement('button');
     var buttonWidth = 40;
     var buttonHeight = 40;
@@ -14,27 +29,24 @@
     mapPinsContentElement.setAttribute('ad-id', id);
     mapPinsContentElement.innerHTML = '<img src="' + ad.author.avatar + '" width="' + buttonWidth + '" height="' + buttonHeight + '" draggable="false">';
 
-    mapPinsContentElement.addEventListener('click', function (evt) {
-      if (evt.currentTarget !== mapPinMainElement) {
-        window.showCard.showCard(evt, currentPins);
-      }
-    });
+    mapPinsContentElement.addEventListener('click', onPinClick);
 
-    mapPinsContentElement.addEventListener('keydown', function (evt) {
-      if (evt.currentTarget !== mapPinMainElement && evt.keyCode === window.data.ENTER_KEYCODE) {
-        window.showCard.showCard(evt, currentPins);
-      }
-    });
+    mapPinsContentElement.addEventListener('keydown', onPinKeyDown);
+
     return mapPinsContentElement;
   };
 
   var updatePins = function () {
+    var mapPinsElement = mapPinsContainerElement.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < mapPinsElement.length; i++) {
+      mapPinsElement[i].removeEventListener('click', onPinClick);
+      mapPinsElement[i].removeEventListener('keydown', onPinKeyDown);
+    }
     mapPinsContainerElement.innerHTML = '';
     mapPinsContainerElement.appendChild(mapPinMainElement);
   };
 
   // Добавляем возможность передвигать центральный пин
-  var mapPinMainElement = document.querySelector('.map__pin--main');
   var addressElement = document.querySelector('#address');
   mapPinMainElement.addEventListener('mousedown', function (evt) {
     evt.preventDefault();

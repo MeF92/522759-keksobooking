@@ -17,7 +17,7 @@
     similarAdElement.querySelector('p:nth-of-type(3)').textContent = ad.offer.rooms + ' ' + window.data.ROOMS_ENDING[ad.offer.rooms] + ' для ' + ad.offer.guests + ' ' + window.data.GUESTS_ENDING[ad.offer.guests];
     similarAdElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
-    for (var i = 0; i <= ad.offer.features.length - 1; i++) {
+    for (var i = 0; i < ad.offer.features.length; i++) {
       var featuresListElement = document.createElement('li');
       featuresListElement.className = 'feature feature--' + ad.offer.features[i];
       popupFeaturesElement.appendChild(featuresListElement);
@@ -34,8 +34,27 @@
   mapElement.insertBefore(similarAdElement, mapFiltersContainerElement);
   similarAdElement.classList.add('hidden');
 
+  // Показываем/Скрываем объявление
+  var currentActivePinElement = null;
+
+  var showCard = function (evt, arr) {
+    if (currentActivePinElement) {
+      currentActivePinElement.classList.remove('map__pin--active');
+    }
+    evt.currentTarget.classList.add('map__pin--active');
+    renderAd(arr[evt.currentTarget.getAttribute('ad-id')]);
+    similarAdElement.classList.remove('hidden');
+    currentActivePinElement = evt.currentTarget;
+  };
+
+  var hideCard = function () {
+    similarAdElement.classList.add('hidden');
+    currentActivePinElement.classList.remove('map__pin--active');
+  };
+
   window.card = {
-    similarAdElement: similarAdElement,
-    renderAd: renderAd
+    showCard: showCard,
+    hideCard: hideCard,
+    similarAdElement: similarAdElement
   };
 })();

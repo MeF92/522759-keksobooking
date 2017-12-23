@@ -2,6 +2,11 @@
 
 // Создаём пины на карте
 (function () {
+  var TOP_LIMIT = 100;
+  var BOTTOM_LIMIT = 650;
+  var LEFT_LIMIT = 210;
+  var RIGHT_LIMIT = 1370;
+
   var mapPinsContainerElement = document.querySelector('.map__pins');
   var mapPinMainElement = document.querySelector('.map__pin--main');
   var currentPins;
@@ -38,10 +43,10 @@
 
   var updatePins = function () {
     var mapPinsElement = mapPinsContainerElement.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < mapPinsElement.length; i++) {
-      mapPinsElement[i].removeEventListener('click', onPinClick);
-      mapPinsElement[i].removeEventListener('keydown', onPinKeyDown);
-    }
+    mapPinsElement.forEach(function (pinElement) {
+      pinElement.removeEventListener('click', onPinClick);
+      pinElement.removeEventListener('keydown', onPinKeyDown);
+    });
     mapPinsContainerElement.innerHTML = '';
     mapPinsContainerElement.appendChild(mapPinMainElement);
   };
@@ -57,7 +62,7 @@
     };
 
     var onMouseMove = function (moveEvt) {
-      if (moveEvt.clientY >= 100 && moveEvt.clientY <= (650 - window.pageYOffset) && moveEvt.clientX >= 210 && moveEvt.clientX <= 1370) {
+      if (moveEvt.clientY >= TOP_LIMIT && moveEvt.clientY <= (BOTTOM_LIMIT - window.pageYOffset) && moveEvt.clientX >= LEFT_LIMIT && moveEvt.clientX <= RIGHT_LIMIT) {
         moveEvt.preventDefault();
 
         var shift = {

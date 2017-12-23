@@ -18,9 +18,9 @@
     similarAdElement.querySelector('p:nth-of-type(3)').textContent = ad.offer.rooms + ' ' + window.data.ROOMS_ENDINGS[ad.offer.rooms] + ' для ' + ad.offer.guests + ' ' + window.data.GUESTS_ENDINGS[ad.offer.guests];
     similarAdElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
-    features.forEach(function (el, i) {
+    features.forEach(function (feature) {
       var featuresListElement = document.createElement('li');
-      featuresListElement.className = 'feature feature--' + ad.offer.features[i];
+      featuresListElement.className = 'feature feature--' + feature;
       popupFeaturesElement.appendChild(featuresListElement);
     });
 

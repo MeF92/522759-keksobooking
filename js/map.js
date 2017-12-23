@@ -43,9 +43,9 @@
 
   var updatePins = function () {
     var mapPinsElement = mapPinsContainerElement.querySelectorAll('.map__pin:not(.map__pin--main)');
-    mapPinsElement.forEach(function (el) {
-      el.removeEventListener('click', onPinClick);
-      el.removeEventListener('keydown', onPinKeyDown);
+    mapPinsElement.forEach(function (pinElement) {
+      pinElement.removeEventListener('click', onPinClick);
+      pinElement.removeEventListener('keydown', onPinKeyDown);
     });
     mapPinsContainerElement.innerHTML = '';
     mapPinsContainerElement.appendChild(mapPinMainElement);
